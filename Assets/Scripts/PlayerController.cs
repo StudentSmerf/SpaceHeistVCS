@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public Transform Front;
     public Transform Down;
     PhotonView view;
+    [SerializeField] private ParticleSystem BoostParticleSystem;
+
     
 
     public GameObject Eyes;
@@ -29,6 +31,20 @@ public class PlayerController : MonoBehaviour
             Destroy(rb);
             Destroy(this);
         }
+    }
+
+    public void ShowBoost(){
+        view.RPC("Boost", RpcTarget.All);
+    }
+    [PunRPC]
+    void Boost(){
+        BoostParticleSystem.Play(false);
+        StartCoroutine("DestroyBoost");
+    }
+
+    IEnumerator DestroyBoost(){
+        yield return new WaitForSeconds(0.2f);
+        BoostParticleSystem.Stop();
     }
 
 
@@ -48,7 +64,7 @@ public class PlayerController : MonoBehaviour
             //Movement on input:
             if(Input.GetKey("space")){
                 rb.AddForce(DirForward * speed * Time.deltaTime, ForceMode.Force);
-                //PlayerHp.instance.ShowBoost();
+                ShowBoost();
             }
             if(Input.GetKey(KeyCode.LeftShift)){
                 rb.AddForce(DirUp * speed * Time.deltaTime, ForceMode.Force);

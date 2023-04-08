@@ -13,10 +13,11 @@ public class NManager : MonoBehaviour
     public SpawnStart[] spawnStart;
     public GameObject PlayerGO;
     public static NManager instance;
-    public bool CanRestart;
+    private int PlayersReady = 0;
+    
     void Awake()
     {
-        CanRestart = true;
+        
         instance = this;
         Hashtable propertyChanges = new Hashtable(); 
 		propertyChanges["Deaths"] = 0;
@@ -31,16 +32,51 @@ public class NManager : MonoBehaviour
     }
     //spawnpoints[Random.Range(0, spawnpoints.Length)].transform.position
     public void SpawnStart(){
-        Hashtable propertyChanges = new Hashtable(); 
-        propertyChanges["Ready"] = 0;
-        PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
+        // Hashtable propertyChanges = new Hashtable(); 
+        // propertyChanges["Ready"] = 0;
+        // PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
         PlayerGO.transform.position = spawnStart[Random.Range(0, spawnStart.Length)].transform.position;
-        if(CanRestart){
-            StartCoroutine("Respawn");
+        StartCoroutine("CheckIfReady");
+    }
+    IEnumerator CheckIfReady(){
+        while(true){
+            if(PhotonNetwork.LocalPlayer.CustomProperties["Ready"]!=null){
+                if((int)PhotonNetwork.LocalPlayer.CustomProperties["Ready"] == 1){
+                    StartCoroutine("CheckIfEveryoneIsReady");
+                    StopCoroutine("CheckIfReady");
+                }
+            }
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    IEnumerator CheckIfEveryoneIsReady(){
+        //TODO display waiting for players
+        while(true){
+            if(PhotonNetwork.LocalPlayer.CustomProperties["Ready"]!=null){
+                if(PhotonNetwork.LocalPlayer.CustomProperties["Side"]!=null){
+                    if((int)PhotonNetwork.LocalPlayer.CustomProperties["Ready"] == 1){
+                        PlayersReady = 0;
+                        Debug.Log("ilosc graczy " + PhotonNetwork.PlayerList.Length);
+                        for (int i = 0 ;i < PhotonNetwork.PlayerList.Length; i++){
+                            if((int)PhotonNetwork.PlayerList[i].CustomProperties["Ready"] == 1){
+                                PlayersReady++;
+                            }
+                
+                        }
+                        Debug.Log("gracze gotowi " + PlayersReady);
+                        if(PlayersReady == PhotonNetwork.PlayerList.Length){
+                            StartCoroutine("Respawn");
+                            StopCoroutine("CheckIfEveryoneIsReady");
+                        }
+                    }
+                }
+            }
+            yield return new WaitForSeconds(2);
         }
     }
     IEnumerator Respawn(){
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         if((string)PhotonNetwork.LocalPlayer.CustomProperties["Side"] == "Smugglers"){
             Hashtable propertyChanges = new Hashtable(); 
             propertyChanges["Ready"] = 0;
@@ -60,19 +96,14 @@ public class NManager : MonoBehaviour
     public void SpawnS(){
         AmmoCount.instance.ChangeAmmo(5);
         PlayerGO.transform.position = spawnpointsS[Random.Range(0, spawnpointsS.Length)].transform.position;
+        PickSideActivator.instance.Disactivate();
     }
     public void SpawnT(){
         AmmoCount.instance.ChangeAmmo(5);
         PlayerGO.transform.position = spawnpointsT[Random.Range(0, spawnpointsT.Length)].transform.position;
+        PickSideActivator.instance.Disactivate();
     }
 
-    public void Restart(){
-        PlayerGO.transform.position = spawnStart[Random.Range(0, spawnStart.Length)].transform.position;
-        CanRestart = false;
-        StartCoroutine("CanRestartC");
-    }
-    IEnumerator CanRestartC(){
-        yield return new WaitForSeconds(6);
-        CanRestart = true;
-    }
+    
+
 }

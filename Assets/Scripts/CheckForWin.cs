@@ -40,7 +40,7 @@ public class CheckForWin : MonoBehaviour
     
     [PunRPC]
     public void SmugglersWin(){
-        NManager.instance.Restart();
+        NManager.instance.SpawnStart();
         PickSide.instance.Reset();
         PickSideActivator.instance.Activate();
         for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++){
@@ -57,7 +57,7 @@ public class CheckForWin : MonoBehaviour
     }
     [PunRPC]
     public void TransportersWin(){
-        NManager.instance.Restart();
+        NManager.instance.SpawnStart();
         PickSide.instance.Reset();
         PickSideActivator.instance.Activate();
         for (int i = 0; i < PhotonNetwork.CurrentRoom.PlayerCount; i++){
