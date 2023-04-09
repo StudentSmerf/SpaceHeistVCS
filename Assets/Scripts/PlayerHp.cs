@@ -40,7 +40,7 @@ public class PlayerHp : MonoBehaviour
 		        PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
                 
                 NManager.instance.SpawnStart();
-                PickSideActivator.instance.Activate();
+                //PickSideActivator.instance.Activate();
                 Hp = 1;
             }
         }

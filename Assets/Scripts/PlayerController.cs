@@ -66,9 +66,9 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(DirForward * speed * Time.deltaTime, ForceMode.Force);
                 ShowBoost();
             }
-            if(Input.GetKey(KeyCode.LeftShift)){
-                rb.AddForce(DirUp * speed * Time.deltaTime, ForceMode.Force);
-            }
+            // if(Input.GetKey(KeyCode.LeftShift)){
+            //     rb.AddForce(DirUp * speed * Time.deltaTime, ForceMode.Force);
+            // }
             if(Input.GetKey(KeyCode.LeftControl)){
                 rb.AddForce(-DirUp * speed * Time.deltaTime, ForceMode.Force);
             }

@@ -17,29 +17,27 @@ public class NManager : MonoBehaviour
     
     void Awake()
     {
-        
         instance = this;
+
         Hashtable propertyChanges = new Hashtable(); 
 		propertyChanges["Deaths"] = 0;
         propertyChanges["Kills"] = 0;
         propertyChanges["SavedPoints"] = 0;
         propertyChanges["Points"] = 0;
         propertyChanges["Ready"] = 0;
-        //AmmoCount.instance.ChangeAmmo(5);
 		PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
+
         GameObject Player = PhotonNetwork.Instantiate("Player", spawnStart[Random.Range(0, spawnStart.Length)].transform.position, Quaternion.identity);
         PlayerGO = Player;
     }
     //spawnpoints[Random.Range(0, spawnpoints.Length)].transform.position
     public void SpawnStart(){
-        // Hashtable propertyChanges = new Hashtable(); 
-        // propertyChanges["Ready"] = 0;
-        // PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
         PlayerGO.transform.position = spawnStart[Random.Range(0, spawnStart.Length)].transform.position;
         StartCoroutine("CheckIfReady");
     }
     IEnumerator CheckIfReady(){
         while(true){
+            yield return new WaitForSeconds(1);
             if(PhotonNetwork.LocalPlayer.CustomProperties["Ready"]!=null){
                 if((int)PhotonNetwork.LocalPlayer.CustomProperties["Ready"] == 1){
                     StartCoroutine("CheckIfEveryoneIsReady");
@@ -78,15 +76,9 @@ public class NManager : MonoBehaviour
     IEnumerator Respawn(){
         yield return new WaitForSeconds(1);
         if((string)PhotonNetwork.LocalPlayer.CustomProperties["Side"] == "Smugglers"){
-            Hashtable propertyChanges = new Hashtable(); 
-            propertyChanges["Ready"] = 0;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
             SpawnS();
         }
         else if((string)PhotonNetwork.LocalPlayer.CustomProperties["Side"] == "Transporters"){
-            Hashtable propertyChanges = new Hashtable(); 
-            propertyChanges["Ready"] = 0;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
             SpawnT();
         }
         else {

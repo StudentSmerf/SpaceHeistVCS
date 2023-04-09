@@ -16,7 +16,7 @@ public class CheckForWin : MonoBehaviour
     void Start(){
         view = GetComponent<PhotonView>();
         if(view.IsMine){
-            StartCoroutine(CheckForWinC());
+            StartCoroutine("CheckForWinC");
         }
     }
 
