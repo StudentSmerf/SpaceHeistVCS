@@ -11,6 +11,10 @@ public class PlayerHp : MonoBehaviour
     public string LastHitPlayerName;
     public GameObject KDsystem;
     public static PlayerHp instance;
+
+    [SerializeField] private ParticleSystem BoostParticleSystem;
+
+
     void Start(){
         Hp = 1;
         instance = this;
@@ -43,6 +47,28 @@ public class PlayerHp : MonoBehaviour
                 //PickSideActivator.instance.Activate();
                 Hp = 1;
             }
+
+
+
+
+            //Show boost particles
+            if(Input.GetKey("space")){
+                ShowBoost();
+            }
         }
+    }
+    //play boost particles for all players, this code is here to not create another class just for particles
+    public void ShowBoost(){
+        view.RPC("Boost", RpcTarget.All);
+    }
+    [PunRPC]
+    void Boost(){
+        BoostParticleSystem.Play(false);
+        StartCoroutine("DestroyBoost");
+    }
+
+    IEnumerator DestroyBoost(){
+        yield return new WaitForSeconds(0.2f);
+        BoostParticleSystem.Stop();
     }
 }

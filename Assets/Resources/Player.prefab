@@ -419,7 +419,6 @@ MonoBehaviour:
   DirUp: {x: 0, y: 0, z: 0}
   Front: {fileID: 5963483930030971518}
   Down: {fileID: 5963483928761734351}
-  BoostParticleSystem: {fileID: 7324419433428643918}
   Eyes: {fileID: 5829381080819411809}
 --- !u!54 &5963483928612123190
 Rigidbody:
@@ -533,6 +532,7 @@ MonoBehaviour:
   LastHitPlayer: 
   LastHitPlayerName: 
   KDsystem: {fileID: 0}
+  BoostParticleSystem: {fileID: 7324419433428643918}
 --- !u!114 &1744409296376902640
 MonoBehaviour:
   m_ObjectHideFlags: 0

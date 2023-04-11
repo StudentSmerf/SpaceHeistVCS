@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public Transform Front;
     public Transform Down;
     PhotonView view;
-    [SerializeField] private ParticleSystem BoostParticleSystem;
 
     
 
@@ -33,19 +32,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ShowBoost(){
-        view.RPC("Boost", RpcTarget.All);
-    }
-    [PunRPC]
-    void Boost(){
-        BoostParticleSystem.Play(false);
-        StartCoroutine("DestroyBoost");
-    }
 
-    IEnumerator DestroyBoost(){
-        yield return new WaitForSeconds(0.2f);
-        BoostParticleSystem.Stop();
-    }
 
 
     void Update(){
@@ -64,7 +51,6 @@ public class PlayerController : MonoBehaviour
             //Movement on input:
             if(Input.GetKey("space")){
                 rb.AddForce(DirForward * speed * Time.deltaTime, ForceMode.Force);
-                ShowBoost();
             }
             // if(Input.GetKey(KeyCode.LeftShift)){
             //     rb.AddForce(DirUp * speed * Time.deltaTime, ForceMode.Force);

@@ -31,6 +31,8 @@ public class Scoreboard : MonoBehaviourPunCallbacks
         {
             GameObject ScoreObj = Instantiate(score, scoreParent.transform.position, Quaternion.identity);
             ScoreObj.transform.SetParent(scoreParent.transform);
+            ScoreObj.GetComponent<RectTransform>().sizeDelta = new Vector2(1000, 100);
+            ScoreObj.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
             ScoreObj.GetComponent<Scores>().numberText.text = i.ToString();
             ScoreObj.GetComponent<Scores>().PlayerNameText.text = PhotonNetwork.PlayerList[i].NickName;
             //The working way to read CustomProperties
