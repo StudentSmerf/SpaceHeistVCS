@@ -6,6 +6,8 @@ public class PickSideActivator : MonoBehaviour
 {
     public GameObject PickSidePanel;
     public GameObject SettingsPanel;
+    public GameObject ReadyButton;
+    public GameObject RespawnButton;
     public static PickSideActivator instance;
     
     void Start()
@@ -18,6 +20,16 @@ public class PickSideActivator : MonoBehaviour
     }
     public void Disactivate(){
         PickSidePanel.SetActive(false);
+    }
+    public void SetButton(bool FirstStart){
+        if(FirstStart){
+            ReadyButton.SetActive(true);
+            RespawnButton.SetActive(false);
+        }
+        else{
+            ReadyButton.SetActive(false);
+            RespawnButton.SetActive(true);
+        }
     }
     void Update(){
         if(Input.GetKeyUp(KeyCode.Tab)){

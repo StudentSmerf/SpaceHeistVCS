@@ -41,10 +41,12 @@ public class PlayerHp : MonoBehaviour
                 KDsystem.GetComponent<KDmanager>().RegisterKill(LastHitPlayerName, PhotonNetwork.LocalPlayer.NickName);
                 Hashtable propertyChanges = new Hashtable(); 
 		        propertyChanges["Deaths"] = 1 + (int)PhotonNetwork.LocalPlayer.CustomProperties["Deaths"];
+                propertyChanges["Ready"] = 0;
 		        PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
                 
                 NManager.instance.SpawnStart();
-                //PickSideActivator.instance.Activate();
+                PickSideActivator.instance.Activate();
+                PickSideActivator.instance.SetButton(false);
                 Hp = 1;
             }
 
