@@ -16,22 +16,30 @@ public class CheckForWin : MonoBehaviour
     public TextMeshProUGUI PointsSText;
     public TextMeshProUGUI PointsTText;
     public static CheckForWin instance;
+    private bool canCheck;
+
     void Start(){
         view = GetComponent<PhotonView>();
         instance = this;
+        canCheck = true;
     }
 
 
     public void Check(){
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++){
-            if((int)PhotonNetwork.PlayerList[i].CustomProperties["SavedPoints"] >= 15){
-                if((string)PhotonNetwork.PlayerList[i].CustomProperties["Side"] == "Smugglers"){
-                    view.RPC("SmugglersWin", RpcTarget.All);
-                }
-                if((string)PhotonNetwork.PlayerList[i].CustomProperties["Side"] == "Transporters"){
-                    view.RPC("TransportersWin", RpcTarget.All);
-                }
-            }      
+        if(canCheck){
+            canCheck = false;
+            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++){
+                if((int)PhotonNetwork.PlayerList[i].CustomProperties["SavedPoints"] >= 15){
+                    canCheck = false;
+                    if((string)PhotonNetwork.PlayerList[i].CustomProperties["Side"] == "Smugglers"){
+                        view.RPC("SmugglersWin", RpcTarget.All);
+                    }
+                    if((string)PhotonNetwork.PlayerList[i].CustomProperties["Side"] == "Transporters"){
+                        view.RPC("TransportersWin", RpcTarget.All);
+                    }
+                }      
+            }
+            canCheck = true;
         }
     }
     
@@ -46,8 +54,6 @@ public class CheckForWin : MonoBehaviour
             propertyChanges["Points"] = 0;
             propertyChanges["SavedPoints"] = 0;
             propertyChanges["Ready"] = 0;
-            propertyChanges["Kills"] = 0;
-            propertyChanges["Deaths"] = 0;
             PhotonNetwork.PlayerList[i].SetCustomProperties(propertyChanges);
         }
         SWins++;
@@ -65,8 +71,6 @@ public class CheckForWin : MonoBehaviour
             propertyChanges["Points"] = 0;
             propertyChanges["SavedPoints"] = 0;
             propertyChanges["Ready"] = 0;
-            propertyChanges["Kills"] = 0;
-            propertyChanges["Deaths"] = 0;
             PhotonNetwork.PlayerList[i].SetCustomProperties(propertyChanges);
         }
         TWins++;
