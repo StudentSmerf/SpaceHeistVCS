@@ -48,6 +48,7 @@ public class PickSide : MonoBehaviour
 		PhotonNetwork.LocalPlayer.SetCustomProperties(propertyChanges);
         
         RSel.SetActive(true);
+        NManager.instance.SpawnStart();
         
     }
     
