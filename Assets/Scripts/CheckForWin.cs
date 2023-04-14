@@ -22,25 +22,49 @@ public class CheckForWin : MonoBehaviour
         view = GetComponent<PhotonView>();
         instance = this;
         canCheck = true;
+        StartCoroutine("CheckC");
+    }
+    IEnumerator CheckC(){
+        while(true){
+            yield return new WaitForSeconds(1);
+            Check();
+        }
     }
 
 
     public void Check(){
-        if(canCheck){
-            canCheck = false;
+        
+        
+            
+            
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++){
+                
                 if((int)PhotonNetwork.PlayerList[i].CustomProperties["SavedPoints"] >= 15){
-                    canCheck = false;
+                    
+                    
                     if((string)PhotonNetwork.PlayerList[i].CustomProperties["Side"] == "Smugglers"){
-                        view.RPC("SmugglersWin", RpcTarget.All);
+                        if(canCheck){
+                            canCheck = false;
+                            view.RPC("SmugglersWin", RpcTarget.All);
+                            SWins++;
+                            PointsSText.text = SWins.ToString();
+                            
+                        }
+                        
                     }
                     if((string)PhotonNetwork.PlayerList[i].CustomProperties["Side"] == "Transporters"){
-                        view.RPC("TransportersWin", RpcTarget.All);
+                        if(canCheck){
+                            canCheck = false;
+                            view.RPC("TransportersWin", RpcTarget.All);
+                            TWins++;
+                            PointsTText.text = TWins.ToString();
+                        }
+                        
                     }
                 }      
             }
             canCheck = true;
-        }
+        
     }
     
     [PunRPC]
@@ -56,8 +80,7 @@ public class CheckForWin : MonoBehaviour
             propertyChanges["Ready"] = 0;
             PhotonNetwork.PlayerList[i].SetCustomProperties(propertyChanges);
         }
-        SWins++;
-        PointsSText.text = SWins.ToString();
+        
     }
     [PunRPC]
     public void TransportersWin(){
@@ -73,7 +96,6 @@ public class CheckForWin : MonoBehaviour
             propertyChanges["Ready"] = 0;
             PhotonNetwork.PlayerList[i].SetCustomProperties(propertyChanges);
         }
-        TWins++;
-        PointsTText.text = TWins.ToString();
+        
     }
 }
