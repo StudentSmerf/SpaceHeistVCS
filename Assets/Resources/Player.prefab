@@ -5605,6 +5605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a302df679875da4ebc652f292b58616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AmmoPosition: {x: 0, y: 3, z: 19.5}
 --- !u!1 &5963483928759268531
 GameObject:
   m_ObjectHideFlags: 0

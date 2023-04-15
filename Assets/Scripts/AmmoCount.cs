@@ -7,6 +7,7 @@ public class AmmoCount : MonoBehaviour
 {
     private int Ammo;
     public static AmmoCount instance;
+    public Vector3 AmmoPosition;
     PhotonView view;
     void Start(){
         instance = this;
@@ -14,7 +15,9 @@ public class AmmoCount : MonoBehaviour
         if(!view.IsMine){
             Destroy(this);
         }
-
+        AmmoPosition = new Vector3(-3, 3,-15);
+        Debug.Log("SpawnAmmo");
+        PhotonNetwork.Instantiate("AmmoCollector", AmmoPosition, Quaternion.identity);
     }
 
     public bool CanUseAmmo(){
