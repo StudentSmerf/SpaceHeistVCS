@@ -15,10 +15,13 @@ public class Crosshair : MonoBehaviour
     }
 
     
-    void Update()
-    {
-        transform.position = Input.mousePosition;
-
+    void Update(){   
+        if(!Input.GetKey(KeyCode.LeftShift)){
+            transform.position = Input.mousePosition;
+        }
+        if(Input.GetKey(KeyCode.LeftShift)){
+            transform.localPosition = Vector3.zero;
+        }
         if(Input.GetKeyDown(KeyCode.Escape)){
             CRenderer.SetAlpha(0f);
             Cursor.visible = true;

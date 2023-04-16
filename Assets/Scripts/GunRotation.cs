@@ -37,10 +37,18 @@ public class GunRotation : MonoBehaviour
     void Update()
     {
         if(view.IsMine){
-            screenPosition = Input.mousePosition;
-            screenPosition.z = Camera.main.nearClipPlane;
-            worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-            direction = worldPosition - CameraG.transform.position;
+            if(!Input.GetKey(KeyCode.LeftShift)){
+                screenPosition = Input.mousePosition;
+                screenPosition.z = Camera.main.nearClipPlane;
+                worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+                direction = worldPosition - CameraG.transform.position;
+            }
+            if(Input.GetKey(KeyCode.LeftShift)){
+                screenPosition = Screen.safeArea.center;
+                screenPosition.z = Camera.main.nearClipPlane;
+                worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+                direction = worldPosition - CameraG.transform.position;
+            }
         }
         //playerNum = this.gameObject.GetComponent<PlayerNum>().NumberOfPlayer;
         GunShotAudioSource.volume = PlayerPrefs.GetFloat("volume", 0.4f);
@@ -51,13 +59,14 @@ public class GunRotation : MonoBehaviour
             
             RaycastHit hit;
             if(Physics.Raycast(GunEnd.transform.position, direction, out hit)){
-                    
+                
                 Vector3 distanceFromWall = hit.point - Gun.transform.position;
                 if(distanceFromWall.magnitude > 0.8f){
                     if(view.IsMine){
                         Gun.transform.LookAt(hit.point, GunUp.transform.position - GunDown.transform.position);
                     }
                 }
+                
                 if(Input.GetButtonDown("Fire1")){
                     if(AmmoCount.instance.CanUseAmmo()){
                         if(this.transform.position.y < 15f){
