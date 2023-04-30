@@ -10,7 +10,7 @@ public class PlayersNumber : MonoBehaviour
     void Update()
     {   
         if(PhotonNetwork.InRoom){
-            text.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString();
+            text.text = "Players connected: " + PhotonNetwork.CurrentRoom.PlayerCount.ToString();
         }
         
     }
